@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple WebComponent test page</title>
+</head>
+<body>
+  <test-component background>
+    <div slot="slot2">slot2-1</div>
+    <div slot="slot2">slot2-2</div>
+    <div slot="slot1" data-index="1">slot1-1</div>
+    <div slot="slot1" data-index="2">slot1-2</div>
+    <div>no-slot-defined</div>
+  </test-component>
+
+<script>
+(function() {
+  'use strict';
+
+  // Feature detect
+  if (!(window.customElements && document.body.attachShadow)) {
+    document.querySelector('test-component').innerHTML = "<b>Not supported.</b>";
+    return;
+  }
+
+  customElements.define('test-component', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+
+      // Create shadow DOM for the component.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <style>
+
+        </style>
+        <div id="slot1-container">
+          <slot id="slot1" name="slot1"></slot>
+        </div>
+        <div id="slot2-container">
+          <slot name="slot2"></slot>
+        </div>
+        <div id="footer">
+          <slot></slot>
+        </div>
+      `;
+    }
+
+    connectedCallback() {
+      console.log("connected");
+
+      // Save refer to we can remove listeners later.
+      this._onSlot1Click = this._onSlot1Click.bind(this);
+
+      const slot1 = this.shadowRoot.querySelector('#slot1');
+      slot1.addEventListener('click', this._onSlot1Click);
+    }
+
+    disconnectedCallback() {
+      console.log("disconnected");
+      const slot1 = this.shadowRoot.querySelector('[name="slot1"]');
+      slot1.removeEventListener('click', this._onSlot1Click);
+    }
+
+    _onSlot1Click(e) {
+      console.log("Clicked on " + e.target.dataset.index);
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>
