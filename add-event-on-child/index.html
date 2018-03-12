@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+
+  <style type="text/css">
+    .has-before::before {
+      content: "test";
+    }
+  </style>
+</head>
+<body>
+  <div class="has-before">
+    <div id="c1">
+    </div>
+  </div>
+
+  <button onclick="document.getElementById('c1').addEventListener('click', () => {})">
+    add event on first child
+  </button>
+</body>
+</html>

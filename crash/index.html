@@ -1,0 +1,21 @@
+<test-component>
+  <div slot="slot1" id="el1">el1</div>
+</test-component>
+
+<test-component></test-component>
+
+<button onclick= "deleteNodes()">Click to remove() #el1 and #el2</button>
+
+<script>
+  'use strict';
+  window.deleteNodes = function () {
+    document.getElementById("el1").remove();
+  }
+  customElements.define('test-component', class extends HTMLElement {
+    constructor() {
+      super();
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = '<slot name="slot1"><div>default</div></slot>';
+    }
+  });
+</script>

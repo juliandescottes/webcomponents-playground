@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple WebComponent test page</title>
+</head>
+<body>
+  <test-component >
+    <div slot="slot1">slot1-1</div>
+    <third-component slot="slot2"></third-component>
+  </test-component>
+
+<script>
+(function() {
+  'use strict';
+
+  function defineComponent(name, html) {
+    customElements.define(name, class extends HTMLElement {
+      constructor() {
+        super();
+        let shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.innerHTML = html;
+      }
+    });
+  }
+
+  defineComponent('test-component', `
+    <div id="slot1-container">
+      <slot name="slot1"></slot>
+      <slot name="slot2"></slot>
+      <other-component><div slot="other1">other1-content</div></other-component>
+    </div>`);
+
+  defineComponent('other-component',
+    `<div id="other1-container"><slot id="other1" name="other1"></slot></div>`);
+
+  defineComponent('third-component', `<div>Third component</div>`);
+})();
+</script>
+</body>
+</html>

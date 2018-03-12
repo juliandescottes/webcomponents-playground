@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<test-component>
+  Some text!
+  <div slot="slot1">content</div>
+</test-component>
+
+<script>
+(function() {
+  'use strict';
+
+  customElements.define('test-component', class extends HTMLElement {
+    constructor() {
+      super();
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `<div>some content</div>`;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

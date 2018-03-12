@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<test-component>
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+  <div>4</div>
+  <div>5</div>
+  <div>6</div>
+  <div>7</div>
+  <div>8</div>
+  <div>9</div>
+  <div>10</div>
+  <div>11</div>
+</test-component>
+
+<script>
+  "use strict";
+  (function () {
+    customElements.define("test-component", class extends HTMLElement {
+      constructor() {
+        super(); // always call super() first in the ctor.
+
+        // Create shadow DOM for the component.
+        let shadowRoot = this.attachShadow({mode: "open"});
+        shadowRoot.innerHTML = `<slot>some default content</slot>`;
+      }
+      connectedCallback() {}
+      disconnectedCallback() {}
+    });
+  })();
+</script>
+
+</body>
+</html>

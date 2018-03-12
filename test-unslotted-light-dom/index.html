@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<test-component>
+  <div slot="slot1">slotted-1</div>
+  <div slot="slot1">slotted-1</div>
+  <div>no slot</div>
+</test-component>
+
+<script>
+  "use strict";
+  (function () {
+    customElements.define("test-component", class extends HTMLElement {
+      constructor() {
+        super(); // always call super() first in the ctor.
+
+        // Create shadow DOM for the component.
+        let shadowRoot = this.attachShadow({mode: "open"});
+        shadowRoot.innerHTML = `
+          <div><slot name="slot1"></slot></div>
+        `;
+      }
+      connectedCallback() {}
+      disconnectedCallback() {}
+    });
+  })();
+</script>
+
+</body>
+</html>

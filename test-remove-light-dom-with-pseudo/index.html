@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <test-component id="component1" background>
+    <div slot="slot1">slot1-1</div>
+    <div slot="slot1" id="delete">slot1-2</div>
+  </test-component>
+
+<script>
+(function() {
+  'use strict';
+
+  // After deleting dynamically slot1-2, the markup view will show the "hidden" nodes
+  // button, but it should not!
+
+  customElements.define('test-component', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+
+      // Create shadow DOM for the component.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <style>
+          slot::after {
+            content: "after-slot1";
+          }
+        </style>
+        <slot name="slot1"></slot>
+      `;
+    }
+    connectedCallback() {}
+    disconnectedCallback() {}
+  });
+
+})();
+</script>
+
+</body>
+</html>
