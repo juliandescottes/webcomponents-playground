@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple WebComponent test page</title>
+  <style type="text/css">
+    test-component {
+      margin: 10px;
+      border: 1px solid black;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <test-component id="component1" background>
+    <div slot="slot1" data-index="1">slot1-1</div>
+    <div slot="slot1" data-index="2">slot1-2</div>
+    <div>no-slot-defined</div>
+  </test-component>
+<script>
+(function() {
+  'use strict';
+
+  customElements.define('test-component', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+
+      // Create shadow DOM for the component.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <style>
+          slot {
+            display: block;
+          }
+
+        </style>
+
+        <div id="wrapper">
+          some text content
+          <div id="slot1-container">
+            <slot id="slot1" name="slot1"></slot>
+            <div>I can be inspected with element picker</div>
+          </div>
+          <div>I can be inspected with element picker</div>
+        </div>
+      `;
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>

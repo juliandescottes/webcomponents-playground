@@ -2,10 +2,13 @@
 <html>
 <body>
 
+<div class="description">
+  <p>This test page shows a web component containing a child that cannot be slotted anywhere</p>
+</div>
+
 <test-component>
-  <div slot="slot1">slotted-1</div>
-  <div slot="slot1">slotted-1</div>
-  <div>no slot</div>
+  <div slot="slot1">in slot 1</div>
+  <div>no default slot available</div>
 </test-component>
 
 <script>
@@ -13,16 +16,13 @@
   (function () {
     customElements.define("test-component", class extends HTMLElement {
       constructor() {
-        super(); // always call super() first in the ctor.
+        super();
 
-        // Create shadow DOM for the component.
         let shadowRoot = this.attachShadow({mode: "open"});
         shadowRoot.innerHTML = `
           <div><slot name="slot1"></slot></div>
         `;
       }
-      connectedCallback() {}
-      disconnectedCallback() {}
     });
   })();
 </script>

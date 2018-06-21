@@ -2,23 +2,25 @@
 <html>
 <body>
 
+<div class="description">
+  <p>This test page shows a custom element with more than 100 elements</p>
+  <p>100 elements is the default limit after which the Firefox DevTools inspector will display a "show more" button</p>
+</div>
+
 <test-component>
-  <div>1</div>
-  <div>2</div>
-  <div>3</div>
-  <div>4</div>
-  <div>5</div>
-  <div>6</div>
-  <div>7</div>
-  <div>8</div>
-  <div>9</div>
-  <div>10</div>
-  <div>11</div>
+  <!-- Will be filled in the script -->
 </test-component>
 
 <script>
   "use strict";
   (function () {
+    for (let i = 0 ; i < 200 ; i++) {
+      const div = document.createElement("div");
+      div.innerHTML = i;
+      div.style.cssText = "display: inline-block; border: 1px solid black; width: 40px; height: 20px; text-align: center; margin: 0 2px 2px 0;";
+      document.querySelector("test-component").appendChild(div);
+    }
+
     customElements.define("test-component", class extends HTMLElement {
       constructor() {
         super(); // always call super() first in the ctor.
@@ -27,8 +29,6 @@
         let shadowRoot = this.attachShadow({mode: "open"});
         shadowRoot.innerHTML = `<slot>some default content</slot>`;
       }
-      connectedCallback() {}
-      disconnectedCallback() {}
     });
   })();
 </script>
