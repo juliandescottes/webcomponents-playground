@@ -18,8 +18,6 @@
   const template = document.querySelector("template");
   const clone = document.importNode(template.content, true);
   document.querySelector("#template-container").appendChild(clone);
-
-  window.opener.postMessage("ready", "*");
 </script>
 
 </body>
