@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>dynamic</title>
+</head>
+<body>
+  <button onclick="attachShadow1()">call attachShadow for component-1</button>
+  <button onclick="attachShadow2()">call attachShadow for component-2</button>
+
+  <component-1>
+    <div slot="slot1">component 1 content</div>
+  </component-1>
+
+  <component-2>
+    <div>component 2 content</div>
+  </component-2>
+
+<script>
+window.attachShadow1 = function() {
+  'use strict';
+  customElements.define('component-1', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <div style="border:1px solid black;">
+          <div>component-1</div>
+          <slot name="slot1"></slot>
+        </div>
+      `;
+    }
+  });
+};
+window.attachShadow2 = function() {
+  'use strict';
+  customElements.define('component-2', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <div style="border:1px solid black;">
+          <div>component-2</div>
+        </div>
+      `;
+    }
+  });
+};
+</script>
+
+</body>
+</html>
