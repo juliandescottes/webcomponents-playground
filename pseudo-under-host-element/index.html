@@ -2,11 +2,19 @@
 <html>
 <head>
   <title>Simple WebComponent test page</title>
+  <style type="text/css">
+    test-component::before {
+      content: "before";
+    }
+
+    test-component::after {
+      content: "after";
+    }
+  </style>
 </head>
 <body>
   <test-component id="component1" background>
     <div slot="slot1" data-index="1">slot1-1</div>
-    <div>no-slot-defined</div>
   </test-component>
 <script>
 (function() {
@@ -19,7 +27,6 @@
       let shadowRoot = this.attachShadow({mode: 'open'});
       shadowRoot.innerHTML = `
         <div id="wrapper">
-          some text content<span class="pick-target">pick-target</span>
           <div id="slot1-container">
             <slot id="slot1" name="slot1"></slot>
           </div>

@@ -6,6 +6,7 @@
 <body>
   <button onclick="attachShadow1()">call attachShadow for component-1</button>
   <button onclick="attachShadow2()">call attachShadow for component-2</button>
+  <button onclick="attachShadow3()">call attachShadow for component-3</button>
 
   <component-1>
     <div slot="slot1">component 1 content</div>
@@ -14,6 +15,8 @@
   <component-2>
     <div>component 2 content</div>
   </component-2>
+
+  <component-3>Inline text child</component-3>
 
 <script>
 window.attachShadow1 = function() {
@@ -40,6 +43,21 @@ window.attachShadow2 = function() {
       shadowRoot.innerHTML = `
         <div style="border:1px solid black;">
           <div>component-2</div>
+        </div>
+      `;
+    }
+  });
+};
+
+window.attachShadow3 = function() {
+  'use strict';
+  customElements.define('component-3', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <div style="border:1px solid black;">
+          <div>component-3</div>
         </div>
       `;
     }
