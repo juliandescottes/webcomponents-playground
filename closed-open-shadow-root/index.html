@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple WebComponent test page (open and closed shadow roots)</title>
+  <style type="text/css">
+    test-component-closed, test-component-open {
+      margin: 10px;
+      border: 1px solid black;
+      display: block;
+    }
+    #component2::before {
+      content: "before-component2";
+      color: red;
+    }
+    #component2::after {
+      content: "after-component2";
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <test-component-open id="component1" background>
+    <div slot="slot2">slot2-1</div>
+    <div slot="slot2">slot2-2</div>
+    <div slot="slot1" data-index="1">slot1-1</div>
+    <div slot="slot1" data-index="2">slot1-2</div>
+    <div>no-slot-defined</div>
+  </test-component-open>
+
+  <test-component-closed id="component2" background>
+    <div slot="slot2">slot2-1</div>
+    <div slot="slot2">slot2-2</div>
+    <div slot="slot1" data-index="1">slot1-1</div>
+    <div slot="slot1" data-index="2">slot1-2</div>
+    <div>no-slot-defined</div>
+  </test-component-closed>
+
+  <test-component id="component3">
+    I am empty
+  </test-component>
+
+<script>
+(function() {
+  'use strict';
+
+  // Feature detect
+  if (!(window.customElements && document.body.attachShadow)) {
+    document.querySelector('test-component').innerHTML =
+      `<b>
+         Not supported. In about:config, set "dom.webcomponents.shadowdom.enabled"
+         to true.
+       </b>`;
+    return;
+  }
+
+  const template = `
+    <style>
+      slot {
+        display: block;
+      }
+      #slot1::before {
+        content: "before-slot1";
+        color: orange;
+      }
+      #slot1::after {
+        content: "after-slot1";
+        color: orange;
+      }
+      #slot1-container::before {
+        content: "before-slot1-container";
+        color: orange;
+      }
+      #slot1-container::after {
+        content: "after-slot1-container";
+        color: orange;
+      }
+    </style>
+    <div id="slot1-container">
+      <slot id="slot1" name="slot1"></slot>
+    </div>
+    <div id="slot2-container">
+      <slot name="slot2">
+        <span>Fallback markup for slot 2</span>
+      </slot>
+    </div>
+    <div id="footer">
+      <slot>
+        <span>Fallback markup for default slot</span>
+      </slot>
+    </div>
+  `;
+
+  customElements.define('test-component-closed', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+
+      // Create shadow DOM for the component.
+      let shadowRoot = this.attachShadow({mode: 'closed'});
+      shadowRoot.innerHTML = template
+    }
+  });
+
+  customElements.define('test-component-open', class extends HTMLElement {
+    constructor() {
+      super(); // always call super() first in the ctor.
+
+      // Create shadow DOM for the component.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = template
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <test-component>
+    <div slot="slot1" id="el1">slot1-1</div>
+    <div slot="slot1" id="el2">slot1-2</div>
+  </test-component>
+
+  <script>
+    'use strict';
+    customElements.define('test-component', class extends HTMLElement {
+      constructor() {
+        super();
+        let shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.innerHTML = '<slot name="slot1"></slot>';
+      }
+    });
+  </script>
+
+</body>
+</html>
