@@ -2,7 +2,8 @@
 
 <div id="host">
   <div id="test1" slot="slot1">This is red because of ::slotted selector</div>
-  <div id="test2" slot="slot2">This is green because of a ::slotted selector coming from a nested slot</div>
+  <div id="test2" slot="slot2">Why is this not green?</div>
+  <div id="test3" slot="slot2">But this one is?</div>
 </div>
 
 <script>
@@ -10,14 +11,12 @@
   const shadow = host.attachShadow({ mode: "open" });
   shadow.innerHTML = `
     <style>
-      ::slotted(#test1) {
-        background: pink;
-      }
-
       ::slotted(div) {
         background: red;
         width: 100px;
         height: 100px;
+        margin: 10px;
+        padding: 10px;
       }
     </style>
     <div id="outer">
@@ -32,6 +31,10 @@
   nested.innerHTML = `
     <style>
       #inner ::slotted(#test2) {
+        background: lime;
+      }
+
+      #inner ::slotted(#test3) {
         background: lime!important;
       }
     </style>
