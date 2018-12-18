@@ -1,0 +1,42 @@
+<!doctype html>
+
+<div id="host">
+  <div id="test1" slot="slot1">This is red because of ::slotted selector</div>
+  <div id="test2" slot="slot2">This is green because of a ::slotted selector coming from a nested slot</div>
+</div>
+
+<script>
+  const host = document.getElementById("host");
+  const shadow = host.attachShadow({ mode: "open" });
+  shadow.innerHTML = `
+    <style>
+      ::slotted(#test1) {
+        background: pink;
+      }
+
+      ::slotted(div) {
+        background: red;
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+    <div id="outer">
+      <slot name="slot1"></slot>
+    </div>
+    <div id="nested">
+      <slot name="slot2"></slot>
+    </div>
+  `;
+
+  const nested = shadow.querySelector("#nested").attachShadow({ mode: "open" });
+  nested.innerHTML = `
+    <style>
+      #inner ::slotted(#test2) {
+        background: lime!important;
+      }
+    </style>
+    <div id="inner">
+      <slot></slot>
+    </div>
+  `;
+</script>
