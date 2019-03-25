@@ -1,0 +1,19 @@
+slot {
+  display: block;
+}
+#slot1::before {
+  content: "before-slot1";
+  color: orange;
+}
+#slot1::after {
+  content: "after-slot1";
+  color: orange;
+}
+#slot1-container::before {
+  content: "before-slot1-container";
+  color: orange;
+}
+#slot1-container::after {
+  content: "after-slot1-container";
+  color: orange;
+}

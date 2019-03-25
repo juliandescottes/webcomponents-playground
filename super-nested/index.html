@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple WebComponent test page</title>
+</head>
+<body>
+  <test-outer></test-outer>
+<script>
+(function() {
+  'use strict';
+
+  function defineComponent(name, html) {
+    customElements.define(name, class extends HTMLElement {
+      constructor() {
+        super();
+        let shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.innerHTML = html;
+      }
+    });
+  }
+
+  defineComponent('test-outer', `
+    <test-inner>
+      <test-image></test-image>
+    </test-inner>`);
+  defineComponent('test-inner', `
+    <div>
+      <div>
+        <div>
+          <slot></slot>
+        </div>
+      </div>
+    </div>`);
+  defineComponent('test-image',
+    `<div style="display:block; height: 200px; width: 200px; background:red"></div>`);
+})();
+</script>
+</body>
+</html>
